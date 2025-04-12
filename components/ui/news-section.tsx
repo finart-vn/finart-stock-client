@@ -46,7 +46,6 @@ const newsItems = [
 export function NewsSection() {
   return (
     <div className="w-full">
-      <h2 className="text-lg font-semibold mb-4">News & Announcements</h2>
       <Swiper
         modules={[Autoplay]} // Enable Autoplay module
         spaceBetween={16} // Space between slides
