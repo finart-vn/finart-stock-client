@@ -67,25 +67,25 @@ export const Header = () => {
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <TrendingUp className="h-6 w-6 text-primary" />
-          <span className="font-bold text-xl mr-4">FinArt Stock</span>
+          <span className="font-bold text-xl mr-4">FinArt</span>
         </Link>
         <Link
           href="#"
           className="text-foreground transition-colors hover:text-foreground font-medium"
         >
-          Dashboard
+         Thị trường
         </Link>
         <Link
           href="#"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
-          Analysis
+          Biểu đồ kỹ thuật
         </Link>
         <Link
           href="#"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
-          Settings
+          Công cụ
         </Link>
       </nav>
 

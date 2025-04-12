@@ -13,7 +13,7 @@ export default function StockPage() {
     <div className="flex flex-col min-h-screen">
       <header className="bg-white shadow">
         <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-          <div className="text-xl font-bold">FinArt Stock</div>
+          <div className="text-xl font-bold">FinArt</div>
           <SearchBar />
         </div>
       </header>

@@ -1,11 +1,19 @@
-// components/ui/LoginModal.tsx
+// components/auth/LoginModal.tsx
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User } from "lucide-react";
+import Image from "next/image";
+
 export const LoginModal = () => {
   return (
     <Dialog>
@@ -16,25 +24,98 @@ export const LoginModal = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Login</DialogTitle>
+        <DialogHeader className="text-left">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-2xl font-bold">Đăng nhập</DialogTitle>
+          </div>
         </DialogHeader>
+
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" placeholder="Enter your username" className="col-span-3" />
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Email hoặc số điện thoại của bạn..."
+              className="w-full bg-[#1f1f1f] border-0"
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">
-              Password
-            </Label>
-            <Input id="password" type="password" placeholder="Enter your password" className="col-span-3" />
+
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="password">Mật khẩu</Label>
+              <Button
+                variant="link"
+                className="text-blue-500 p-0 h-auto font-normal"
+              >
+                Quên mật khẩu?
+              </Button>
+            </div>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Mật khẩu của bạn..."
+              className="w-full bg-[#1f1f1f] border-0"
+            />
           </div>
-        </div>
-        <div className="flex justify-end">
-          <Button type="submit">Login</Button>
+
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+            Đăng nhập
+          </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Hoặc
+              </span>
+            </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Button variant="outline" className="w-full">
+              <Image
+                src="/google.svg"
+                alt="Google"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Google
+            </Button>
+            <Button variant="outline" className="w-full">
+              <Image
+                src="/facebook.svg"
+                alt="Facebook"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Facebook
+            </Button>
+            <Button variant="outline" className="w-full">
+              <Image
+                src="/apple.svg"
+                alt="Apple"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Apple
+            </Button>
+          </div>
+
+          <div className="text-center text-sm text-muted-foreground">
+            Bạn chưa có tài khoản?{" "}
+            <Button
+              variant="link"
+              className="text-blue-500 p-0 h-auto font-normal"
+            >
+              Đăng ký
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -41,7 +41,7 @@ export function Sidebar() {
             <Link href="#dashboard" className="p-2.5 rounded-full hover:bg-accent group">
               <Grid className="w-6 h-6 text-orange-500 group-hover:text-orange-400" />
             </Link>
-            <span className="absolute -right-2 -top-2 bg-gray-700 text-gray-200 text-[10px] px-1.5 py-0.5 rounded">Beta</span>
+            <span className="absolute -right-6 -top-1 bg-gray-700 text-gray-200 text-[10px] px-1.5 py-0.5 rounded">Beta</span>
           </div>
           
           <Link href="#favorites" className="p-2.5 rounded-full hover:bg-accent group">
@@ -57,7 +57,7 @@ export function Sidebar() {
             <Link href="#new-features" className="p-2.5 rounded-full hover:bg-accent group">
               <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-foreground" />
             </Link>
-            <span className="absolute -right-2 -top-2 bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded">New</span>
+            <span className="absolute -right-8 -top-1 bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded">New</span>
           </div>
           
           <Link href="#learning" className="p-2.5 rounded-full hover:bg-accent group">
