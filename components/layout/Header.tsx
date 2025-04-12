@@ -11,14 +11,15 @@ import {
   BarChart,
   Briefcase,
   Settings,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
 import { LoginModal } from "@/components/auth/LoginModal";
-
+import { signOut, useSession } from "next-auth/react";
 export const Header = () => {
+  const { data: session } = useSession();
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-      {/* Mobile Menu */}
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -73,7 +74,7 @@ export const Header = () => {
           href="#"
           className="text-foreground transition-colors hover:text-foreground font-medium"
         >
-         Thị trường
+          Thị trường
         </Link>
         <Link
           href="#"
@@ -99,7 +100,16 @@ export const Header = () => {
             className="w-full rounded-lg bg-muted pl-8 md:w-[200px] lg:w-[300px]"
           />
         </div>
-        <LoginModal />
+        {session?.user?.name ? (
+          <div>
+            <span>{session?.user?.name}</span>
+            <Button onClick={() => signOut()}>
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <LoginModal />
+        )}
       </div>
     </header>
   );

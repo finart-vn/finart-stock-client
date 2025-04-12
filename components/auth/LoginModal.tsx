@@ -12,9 +12,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
 
 export const LoginModal = () => {
+  const [email, setEmail] = useState("follower@gmail.com");
+  const [password, setPassword] = useState("123");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      if (res?.error) {
+        setError(res?.error);
+      }
+    } catch (error) {
+      // setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,6 +63,8 @@ export const LoginModal = () => {
               type="email"
               placeholder="Email hoặc số điện thoại của bạn..."
               className="w-full bg-[#1f1f1f] border-0"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -56,11 +83,19 @@ export const LoginModal = () => {
               type="password"
               placeholder="Mật khẩu của bạn..."
               className="w-full bg-[#1f1f1f] border-0"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-            Đăng nhập
+          {error && (
+            <div className="text-red-500 text-sm">{error}</div>
+          )}
+          <Button
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
           </Button>
 
           <div className="relative">

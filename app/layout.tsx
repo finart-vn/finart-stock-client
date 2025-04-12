@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/Header";
 import { Sidebar } from "@/components/sidebar";
+import { AuthProvider } from "./auth-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,26 +43,28 @@ export default function RootLayout({
           workSans.className
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ReduxProvider>
-            <div className="flex min-h-screen w-full flex-col bg-background">
-              {/* Sidebar */}
-              <Sidebar />
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ReduxProvider>
+              <div className="flex min-h-screen w-full flex-col bg-background">
+                {/* Sidebar */}
+                <Sidebar />
 
-              {/* Main content with margin to accommodate the sidebar */}
-              <div className="ml-16 flex-1 flex flex-col">
-                {/* Header */}
-                <Header />
-                {children}
+                {/* Main content with margin to accommodate the sidebar */}
+                <div className="ml-16 flex-1 flex flex-col">
+                  {/* Header */}
+                  <Header />
+                  {children}
+                </div>
               </div>
-            </div>
-          </ReduxProvider>
-        </ThemeProvider>
+            </ReduxProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
