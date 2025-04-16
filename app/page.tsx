@@ -4,6 +4,7 @@ import { MarketActivity } from "@/components/market-activity"; // Import the new
 import { MarketChart } from "@/components/market-chart"; // Import the new chart component
 import { ProposeInvest } from "@/components/ProposeInvest"; // Import the ProposeInvest component
 import { SectorPerformance } from "@/components/sector-performance"; // Import the Sector Performance component
+import StockMarketTable from "@/components/stock-market-table"; // Import the Stock Market Table component
 import {
   Card,
   CardContent,
@@ -140,6 +141,11 @@ export default function HomePage() {
 
       {/* Market Activity Section */}
       <MarketActivity />
+
+      {/* Stock Market Table */}
+      <div className="mt-6">
+        <StockMarketTable />
+      </div>
 
       {/* Main Analysis Area */}
       <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
