@@ -1,5 +1,9 @@
 "use client"; // Required for Chart.js interaction
 
+import { MarketActivity } from "@/components/market-activity"; // Import the new component
+import { MarketChart } from "@/components/market-chart"; // Import the new chart component
+import { ProposeInvest } from "@/components/ProposeInvest"; // Import the ProposeInvest component
+import { SectorPerformance } from "@/components/sector-performance"; // Import the Sector Performance component
 import {
   Card,
   CardContent,
@@ -7,22 +11,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { TrendingUp, Briefcase, BarChart } from "lucide-react"; // Added more relevant icons
+import { NewsSection } from "@/components/ui/news-section"; // Import the new component
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
+import { BarChart, Briefcase, TrendingUp } from "lucide-react"; // Added more relevant icons
 import { Line } from "react-chartjs-2";
-import { NewsSection } from "@/components/ui/news-section"; // Import the new component
-import { MarketActivity } from "@/components/market-activity"; // Import the new component
-import { MarketChart } from "@/components/market-chart"; // Import the new chart component
-import { ProposeInvest } from "@/components/ProposeInvest"; // Import the ProposeInvest component
 
 // Register Chart.js components
 ChartJS.register(
@@ -65,7 +66,7 @@ const chartOptions = {
 
 export default function HomePage() {
   return (
-    <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-6 w-full max-w-screen-2xl mx-auto">
+    <main className="grid grid-cols-1 gap-6 p-4 md:gap-8 md:p-6 w-full max-w-screen-2xl mx-auto">
       {/* News Section */}
       <NewsSection />
 
@@ -76,6 +77,13 @@ export default function HomePage() {
         </div>
         <div className="lg:col-span-1">
           <ProposeInvest />
+        </div>
+      </div>
+
+      {/* Sector Performance */}
+      <div className="mt-6 grid grid-cols-2 justify-end">
+        <div className="col-start-2">
+          <SectorPerformance />
         </div>
       </div>
 

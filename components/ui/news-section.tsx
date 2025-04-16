@@ -13,6 +13,7 @@ import "swiper/css/autoplay";
 // import required modules
 import { Autoplay } from "swiper/modules";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 // Sample news data structure (replace with actual data fetching later)
 const newsItems = [
@@ -54,9 +55,9 @@ const newsItems = [
   // Add more items as needed
 ];
 
-export function NewsSection() {
+export function NewsSection(props: {className?: string}) {
   return (
-    <div className="w-full">
+    <div className={cn("w-full", props.className)}>
       <Swiper
         modules={[Autoplay]} // Enable Autoplay module
         spaceBetween={16} // Space between slides

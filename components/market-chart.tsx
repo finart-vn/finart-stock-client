@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { Button } from "@/components/ui/button"; // Unused
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+// import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,6 +22,7 @@ import {
 // import { Line, Bar } from 'react-chartjs-2'; // Bar unused
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
+import TimeTabs from "@/components/ui/time-tabs";
 
 ChartJS.register(
   CategoryScale,
@@ -229,41 +230,32 @@ const legendItems = [
   { label: "Cảnh báo", color: "bg-pink-500", icon: "!" },
 ];
 
-export function MarketChart() {
+export const MarketChart = () => {
   const [timeRange, setTimeRange] = useState("5y");
-
-  // TODO: Filter data based on timeRange state
+  
+  // Update chart data based on timeRange
+  useEffect(() => {
+    console.log(`Chart data updated for timeRange: ${timeRange}`);
+    // In a real app, we would fetch or filter data based on the time range
+    // This is a placeholder for the actual implementation
+  }, [timeRange]);
 
   return (
     <div className="w-full bg-card p-4 rounded-lg border border-border shadow-sm">
       {/* Time Range Selector */}
       <div className="mb-4">
-        <ToggleGroup
-          type="single"
+        <TimeTabs
+          options={[
+            { label: "1M", value: "1m" },
+            { label: "3M", value: "3m" },
+            { label: "1Y", value: "1y" },
+            { label: "5Y", value: "5y" },
+            { label: "Tất cả", value: "all" }
+          ]}
           defaultValue="5y"
-          variant="outline"
-          value={timeRange}
-          onValueChange={(value: string) => {
-            if (value) setTimeRange(value);
-          }} // Add type for value
-          className="justify-start"
-        >
-          <ToggleGroupItem className="px-4" value="1m" aria-label="1 Month">
-            1M
-          </ToggleGroupItem>
-          <ToggleGroupItem className="px-4" value="3m" aria-label="3 Months">
-            3M
-          </ToggleGroupItem>
-          <ToggleGroupItem className="px-4" value="1y" aria-label="1 Year">
-            1Y
-          </ToggleGroupItem>
-          <ToggleGroupItem className="px-4" value="5y" aria-label="5 Years">
-            5Y
-          </ToggleGroupItem>
-          <ToggleGroupItem className="px-4" value="all" aria-label="All Time">
-            Tất cả
-          </ToggleGroupItem>
-        </ToggleGroup>
+          onValueChange={(value) => setTimeRange(value)}
+          buttonStyle="minimal"
+        />
       </div>
 
       {/* Chart Area */}
