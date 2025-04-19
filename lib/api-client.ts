@@ -33,51 +33,49 @@ interface ApiErrorResponse {
 const apiClient: AxiosInstance = axios.create({
   baseURL: process.env.FINART_API_URL + "/api" || "http://localhost:3000",
   timeout: 10000,
-  paramsSerializer: (params) => {
-    return Object.keys(params)
-      .map((key) => key + "=" + encodeURIComponent(params[key]))
-      .join("&");
+  headers: {
+    "Content-Type": "application/json",
   },
 });
 
 // Add request interceptor for authentication
-apiClient.interceptors.request.use(
-  async (config) => {
-    // Get token from localStorage or other storage mechanism
-    // const session = await getSession() as CustomSession | null;
+// apiClient.interceptors.request.use(
+//   async (config) => {
+//     // Get token from localStorage or other storage mechanism
+//     // const session = await getSession() as CustomSession | null;
 
-    // console.log({ session });
-    // const token = session?.user?.section?.token || null;
-    // if (token) {
-    //   config.headers["session"] = token;
-    // }
+//     // console.log({ session });
+//     // const token = session?.user?.section?.token || null;
+//     // if (token) {
+//     //   config.headers["session"] = token;
+//     // }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 // Add response interceptor for global error handling
-apiClient.interceptors.response.use(
-  (response: AxiosResponse) => response.data,
-  (error: AxiosError<ApiErrorResponse>) => {
-    // Extract error message from response or use default message
-    const errorMessage =
-      error.response?.data?.message ||
-      error.response?.data?.error ||
-      error.message ||
-      "An unexpected error occurred";
+// apiClient.interceptors.response.use(
+//   (response: AxiosResponse) => response.data,
+//   (error: AxiosError<ApiErrorResponse>) => {
+//     // Extract error message from response or use default message
+//     const errorMessage =
+//       error.response?.data?.message ||
+//       error.response?.data?.error ||
+//       error.message ||
+//       "An unexpected error occurred";
 
-    // Handle specific status codes
-    if (error.response?.status === 401) {
-      if (typeof window !== "undefined") {
-        // clearUserData();
-      }
-    }
+//     // Handle specific status codes
+//     if (error.response?.status === 401) {
+//       if (typeof window !== "undefined") {
+//         // clearUserData();
+//       }
+//     }
 
-    return Promise.reject(new Error(errorMessage));
-  }
-);
+//     return Promise.reject(new Error(errorMessage));
+//   }
+// );
 
 // Helper methods for common API operations
 export const api = {

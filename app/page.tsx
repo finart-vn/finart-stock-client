@@ -82,11 +82,11 @@ export default function HomePage() {
       </div>
 
       {/* Sector Performance */}
-      <div className="mt-6 grid grid-cols-2 justify-end">
+      {/* <div className="mt-6 grid grid-cols-2 justify-end">
         <div className="col-start-2">
           <SectorPerformance />
         </div>
-      </div>
+      </div> */}
 
       {/* Dashboard Overview Cards */}
       <h1 className="text-lg font-semibold md:text-2xl">Dashboard Overview</h1>
@@ -145,80 +145,6 @@ export default function HomePage() {
       {/* Stock Market Table */}
       <div className="mt-6">
         <StockMarketTable />
-      </div>
-
-      {/* Main Analysis Area */}
-      <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-        <Card className="xl:col-span-2 border shadow-sm">
-          <CardHeader className="flex flex-row items-center">
-            <div className="grid gap-2">
-              <CardTitle>Stock Analysis & Valuation</CardTitle>
-              <CardDescription>
-                Sample stock data shown below. Select a stock to update.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {/* Chart Container */}
-            <div className="h-[400px] w-full relative">
-              <Line options={chartOptions} data={chartData} />
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-muted-foreground">Market Cap:</span> $2.7T
-              </div>
-              <div>
-                <span className="text-muted-foreground">P/E Ratio:</span> 28.5
-              </div>
-              <div>
-                <span className="text-muted-foreground">Dividend Yield:</span>{" "}
-                0.6%
-              </div>
-              <div>
-                <span className="text-muted-foreground">52 Week High:</span>{" "}
-                $198.23
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        {/* Placeholder for News/Watchlist Details etc. */}
-        <Card className="border shadow-sm">
-          <CardHeader>
-            <CardTitle>Recent News</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="flex items-start gap-3">
-              <div className="bg-muted rounded-md h-10 w-10"></div>{" "}
-              {/* Image Placeholder */}
-              <div>
-                <p className="text-sm font-medium leading-none">
-                  Analyst upgrades stock rating
-                </p>
-                <p className="text-xs text-muted-foreground">Source - 2h ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="bg-muted rounded-md h-10 w-10"></div>{" "}
-              {/* Image Placeholder */}
-              <div>
-                <p className="text-sm font-medium leading-none">
-                  New product announcement boosts shares
-                </p>
-                <p className="text-xs text-muted-foreground">Source - 5h ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="bg-muted rounded-md h-10 w-10"></div>{" "}
-              {/* Image Placeholder */}
-              <div>
-                <p className="text-sm font-medium leading-none">
-                  Company reports strong earnings
-                </p>
-                <p className="text-xs text-muted-foreground">Source - 1d ago</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </main>
   );

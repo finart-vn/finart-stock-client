@@ -23,6 +23,7 @@ import {
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import TimeTabs from "@/components/ui/time-tabs";
+import { getMarketChart } from "@/lib/apis";
 
 ChartJS.register(
   CategoryScale,
@@ -91,7 +92,7 @@ const commonOptions: MarketChartOptions = {
       },
       ticks: {
         // color: 'oklch(var(--foreground))',
-        color: 'gray',
+        color: "gray",
         maxRotation: 0,
         autoSkip: true,
       },
@@ -103,7 +104,7 @@ const commonOptions: MarketChartOptions = {
       },
       ticks: {
         // color: 'oklch(var(--foreground))',
-        color: 'gray',
+        color: "gray",
       },
     },
   },
@@ -232,14 +233,28 @@ const legendItems = [
 
 export const MarketChart = () => {
   const [timeRange, setTimeRange] = useState("5y");
-  
   // Update chart data based on timeRange
   useEffect(() => {
     console.log(`Chart data updated for timeRange: ${timeRange}`);
     // In a real app, we would fetch or filter data based on the time range
     // This is a placeholder for the actual implementation
   }, [timeRange]);
-
+  
+  useEffect(() => {
+    const fetchMarketChart = async () => {
+    try {
+        const response = await getMarketChart({
+          symbols: ["VN30", "VNINDEX"],
+          fromDate: "1744833386",
+          toDate: "1745006186",
+        });
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching market chart:", error);
+      }
+    };
+    fetchMarketChart();
+  }, []);
   return (
     <div className="w-full bg-card p-4 rounded-lg border border-border shadow-sm">
       {/* Time Range Selector */}
@@ -250,7 +265,7 @@ export const MarketChart = () => {
             { label: "3M", value: "3m" },
             { label: "1Y", value: "1y" },
             { label: "5Y", value: "5y" },
-            { label: "Tất cả", value: "all" }
+            { label: "Tất cả", value: "all" },
           ]}
           defaultValue="5y"
           onValueChange={(value) => setTimeRange(value)}
@@ -302,4 +317,4 @@ export const MarketChart = () => {
       </div>
     </div>
   );
-}
+};
