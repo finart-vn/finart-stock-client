@@ -1,11 +1,10 @@
 import { api } from "../api-client";
+import { MarketChartRequest, MarketChartResponse } from "@/types/api/stock";
 
-interface MarketChartRequest {
-  symbols: ["VN30", "VNINDEX"];
-  fromDate: string;
-  toDate: string;
-}
 export const getMarketChart = async (request: MarketChartRequest) => {
-  const response = await api.post("/stock/chart/market", request);
+  const response = await api.post<MarketChartResponse>(
+    "/stock/chart/market",
+    request
+  );
   return response;
 };

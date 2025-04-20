@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 // import { Button } from "@/components/ui/button"; // Unused
 // import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
@@ -24,6 +24,7 @@ import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import TimeTabs from "@/components/ui/time-tabs";
 import { getMarketChart } from "@/lib/apis";
+import { MarketChartData } from "@/types/api/stock";
 
 ChartJS.register(
   CategoryScale,
@@ -133,30 +134,30 @@ const vnIndexOptions: MarketChartOptions = {
     },
   },
 };
-const marketCycleOptions: MarketChartOptions = {
-  ...commonOptions,
-  plugins: {
-    ...commonOptions.plugins,
-    title: {
-      display: true,
-      text: "FiNart AI - Market Cycle Index",
-      align: "start" as const,
-      color: "white",
-    },
-  },
-};
-const marketStructureOptions: MarketChartOptions = {
-  ...commonOptions,
-  plugins: {
-    ...commonOptions.plugins,
-    title: {
-      display: true,
-      text: "FiNart AI - Market Structure Index",
-      align: "start" as const,
-      color: "white",
-    },
-  },
-};
+// const marketCycleOptions: MarketChartOptions = {
+//   ...commonOptions,
+//   plugins: {
+//     ...commonOptions.plugins,
+//     title: {
+//       display: true,
+//       text: "FiNart AI - Market Cycle Index",
+//       align: "start" as const,
+//       color: "white",
+//     },
+//   },
+// };
+// const marketStructureOptions: MarketChartOptions = {
+//   ...commonOptions,
+//   plugins: {
+//     ...commonOptions.plugins,
+//     title: {
+//       display: true,
+//       text: "FiNart AI - Market Structure Index",
+//       align: "start" as const,
+//       color: "white",
+//     },
+//   },
+// };
 const bottomIndexOptions: MarketChartOptions = {
   ...commonOptions,
   plugins: { ...commonOptions.plugins, title: { display: false } },
@@ -233,18 +234,37 @@ const legendItems = [
 
 export const MarketChart = () => {
   const [timeRange, setTimeRange] = useState("5y");
+  const [marketChartData, setMarketChartData] = useState<MarketChartData[]>([]);
   // Update chart data based on timeRange
+  const vnIndexChartData = useMemo(() => {
+    if (marketChartData.length === 0) return null;
+    return {
+      datasets: [
+        {
+          label: "VN-Index",
+          data: marketChartData[0].c.map((c, index) => ({
+            x: marketChartData[0].t[index],
+            y: c,
+          })),
+          borderColor: "hsl(24 95% 53%)", // Direct HSL for orange
+          borderWidth: 2,
+          tension: 0.1,
+        },
+      ],
+    };
+  }, [marketChartData]);
   useEffect(() => {
     console.log(`Chart data updated for timeRange: ${timeRange}`);
     // In a real app, we would fetch or filter data based on the time range
     // This is a placeholder for the actual implementation
-  }, [timeRange]);
-  
+    setMarketChartData(marketChartData);
+  }, []);
+
   useEffect(() => {
     const fetchMarketChart = async () => {
-    try {
+      try {
         const response = await getMarketChart({
-          symbols: ["VN30", "VNINDEX"],
+          symbols: ["VNINDEX"],
           fromDate: "1744833386",
           toDate: "1745006186",
         });
@@ -277,19 +297,21 @@ export const MarketChart = () => {
       <div className="space-y-2">
         {/* VN-Index Chart */}
         <div className="h-[300px]">
-          <Line options={vnIndexOptions} data={vnIndexChartData} />
+          {vnIndexChartData && (
+            <Line options={vnIndexOptions} data={vnIndexChartData} />
+          )}
         </div>
         {/* Market Cycle Chart */}
-        <div className="h-[150px]">
+        {/* <div className="h-[150px]">
           <Line options={marketCycleOptions} data={marketCycleChartData} />
-        </div>
+        </div> */}
         {/* Market Structure Chart */}
-        <div className="h-[150px]">
+        {/* <div className="h-[150px]">
           <Line
             options={marketStructureOptions}
             data={marketStructureChartData}
           />
-        </div>
+        </div> */}
         {/* Bottom Index Chart */}
         <div className="h-[100px]">
           <Line options={bottomIndexOptions} data={bottomIndexChartData} />
