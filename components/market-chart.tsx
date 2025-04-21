@@ -25,7 +25,8 @@ import "chartjs-adapter-date-fns";
 import TimeTabs from "@/components/ui/time-tabs";
 import { getMarketChart } from "@/lib/apis";
 import { MarketChartData } from "@/types/api/stock";
-
+import { parseISO } from "date-fns";
+import { getDateRange, parseUnixTimestamp } from "@/lib/utils";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -233,17 +234,18 @@ const legendItems = [
 ];
 
 export const MarketChart = () => {
-  const [timeRange, setTimeRange] = useState("5y");
-  const [marketChartData, setMarketChartData] = useState<MarketChartData[]>([]);
+  const [timeRange, setTimeRange] = useState("3m");
+  const [marketChartData, setMarketChartData] =
+    useState<MarketChartData | null>(null);
   // Update chart data based on timeRange
   const vnIndexChartData = useMemo(() => {
-    if (marketChartData.length === 0) return null;
+    if (!marketChartData) return null;
     return {
       datasets: [
         {
           label: "VN-Index",
-          data: marketChartData[0].c.map((c, index) => ({
-            x: marketChartData[0].t[index],
+          data: marketChartData.c.map((c, index) => ({
+            x: parseUnixTimestamp(marketChartData.t[index]),
             y: c,
           })),
           borderColor: "hsl(24 95% 53%)", // Direct HSL for orange
@@ -252,7 +254,7 @@ export const MarketChart = () => {
         },
       ],
     };
-  }, [marketChartData]);
+  }, [marketChartData, setMarketChartData]);
   useEffect(() => {
     console.log(`Chart data updated for timeRange: ${timeRange}`);
     // In a real app, we would fetch or filter data based on the time range
@@ -260,19 +262,20 @@ export const MarketChart = () => {
     setMarketChartData(marketChartData);
   }, []);
 
+  const fetchMarketChart = async () => {
+    try {
+      const { startDate, endDate } = getDateRange(timeRange as "3m" | "1y" | "5y" | "all");
+      const response = await getMarketChart({
+        symbols: ["VNINDEX"],
+        fromDate: startDate,
+        toDate: endDate,
+      });
+      setMarketChartData(response.data[0]);
+    } catch (error) {
+      console.error("Error fetching market chart:", error);
+    }
+  };
   useEffect(() => {
-    const fetchMarketChart = async () => {
-      try {
-        const response = await getMarketChart({
-          symbols: ["VNINDEX"],
-          fromDate: "1744833386",
-          toDate: "1745006186",
-        });
-        console.log(response);
-      } catch (error) {
-        console.error("Error fetching market chart:", error);
-      }
-    };
     fetchMarketChart();
   }, []);
   return (
