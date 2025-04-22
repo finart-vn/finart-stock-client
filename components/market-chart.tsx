@@ -87,7 +87,7 @@ const commonOptions: MarketChartOptions = {
     x: {
       type: "time" as const,
       time: {
-        unit: "year" as const,
+        unit: "day" as const,
       },
       grid: {
         display: false,
@@ -97,6 +97,7 @@ const commonOptions: MarketChartOptions = {
         color: "gray",
         maxRotation: 0,
         autoSkip: true,
+        maxTicksLimit: 10,
       },
     },
     y: {
@@ -107,7 +108,9 @@ const commonOptions: MarketChartOptions = {
       ticks: {
         // color: 'oklch(var(--foreground))',
         color: "gray",
+        maxTicksLimit: 10,
       },
+      beginAtZero: false,
     },
   },
   plugins: {
@@ -250,7 +253,7 @@ export const MarketChart = () => {
           })),
           borderColor: "hsl(24 95% 53%)", // Direct HSL for orange
           borderWidth: 2,
-          tension: 0.1,
+          tension: 1,
         },
       ],
     };
@@ -291,7 +294,10 @@ export const MarketChart = () => {
             { label: "Tất cả", value: "all" },
           ]}
           defaultValue="5y"
-          onValueChange={(value) => setTimeRange(value)}
+          onValueChange={(value) => {
+            setTimeRange(value);
+            fetchMarketChart();
+          }}
           buttonStyle="minimal"
         />
       </div>
