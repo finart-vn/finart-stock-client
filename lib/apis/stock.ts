@@ -32,7 +32,7 @@ export const getStockMarketData = async (
     });
     console.log({ response });
     // Transform the API response to match the StockMarketTable component's data structure
-    const transformedData: StockMarketDataItem[] = response.map(
+    const transformedData: StockMarketDataItem[] = response.data.map(
       (stockData: StockMarketData) => {
         const { listingInfo, matchPrice } = stockData;
 
