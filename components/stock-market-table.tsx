@@ -7,116 +7,11 @@ import { ChevronDown, ChevronUp, Loader } from "lucide-react";
 import Image from "next/image";
 import { getStockMarketData } from "@/lib/apis/stock";
 import { StockMarketDataItem } from "@/types/api/stock";
+import { sampleStockData } from "@/lib/mocks/stock";
+import { formatNumber, formatCurrency, formatPercent } from "@/lib/utils/format-number";
 
 // Define the type for stock data, extending Record<string, unknown> to make it compatible
 export interface StockData extends StockMarketDataItem, Record<string, unknown> {}
-
-// Utility functions
-const formatNumber = (num: number, decimals = 2): string => {
-  return new Intl.NumberFormat("vi-VN", {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  }).format(num);
-};
-
-const formatCurrency = (num: number): string => {
-  if (num >= 1_000_000_000_000) {
-    return formatNumber(num / 1_000_000_000_000) + "T";
-  }
-  if (num >= 1_000_000_000) {
-    return formatNumber(num / 1_000_000_000) + "B";
-  }
-  if (num >= 1_000_000) {
-    return formatNumber(num / 1_000_000) + "M";
-  }
-  if (num >= 1_000) {
-    return formatNumber(num / 1_000) + "K";
-  }
-  return formatNumber(num);
-};
-
-const formatPercent = (num: number): string => {
-  return formatNumber(num) + "%";
-};
-
-// Sample data for fallback
-const sampleStockData: StockData[] = [
-  {
-    code: "VCB",
-    name: "Ngân hàng TMCP Ngoại thương Việt Nam",
-    marketCap: 495491000000000,
-    price: 59300,
-    priceChange: -700,
-    priceChangePercent: -1.17,
-    pe: 14.65,
-    pb: 2.53,
-    roe: 18.56,
-    threeYearGrowth: 10.39,
-    dividendYield: 0.8,
-    sector: "Tài chính",
-    industry: "Ngân hàng"
-  },
-  {
-    code: "VIC",
-    name: "Tập đoàn Vingroup - CTCP",
-    marketCap: 259626000000000,
-    price: 67900,
-    priceChange: -2600,
-    priceChangePercent: -3.69,
-    pe: 21.81,
-    pb: 1.89,
-    roe: 3.5,
-    threeYearGrowth: -59.63,
-    dividendYield: 0,
-    sector: "Bất động sản",
-    industry: "Bất động sản"
-  },
-  {
-    code: "BID",
-    name: "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
-    marketCap: 252769000000000,
-    price: 36000,
-    priceChange: -500,
-    priceChangePercent: -1.37,
-    pe: 10.05,
-    pb: 1.81,
-    roe: 19.12,
-    threeYearGrowth: 11.8,
-    dividendYield: 2.4,
-    sector: "Tài chính",
-    industry: "Ngân hàng"
-  },
-  {
-    code: "VHM",
-    name: "Công ty Cổ phần Vinhomes",
-    marketCap: 232068000000000,
-    price: 56500,
-    priceChange: -1000,
-    priceChangePercent: -1.74,
-    pe: 7.3,
-    pb: 1.15,
-    roe: 17.4,
-    threeYearGrowth: 3.42,
-    dividendYield: 1.5,
-    sector: "Bất động sản",
-    industry: "Bất động sản"
-  },
-  {
-    code: "CTG",
-    name: "Ngân hàng TMCP Công Thương Việt Nam",
-    marketCap: 199763000000000,
-    price: 37200,
-    priceChange: -550,
-    priceChangePercent: -1.46,
-    pe: 7.88,
-    pb: 1.35,
-    roe: 18.46,
-    threeYearGrowth: 16.55,
-    dividendYield: 2.1,
-    sector: "Tài chính",
-    industry: "Ngân hàng"
-  }
-];
 
 // Default stock symbols to fetch if none provided
 const defaultStockSymbols = ["VCB", "VIC", "BID", "VHM", "CTG", "FPT", "MBB", "MSN", "HPG", "VNM"];
@@ -376,6 +271,10 @@ export function StockMarketTable({
             columns={columns}
             striped={true}
             onRowClick={(stock) => console.log("Clicked on", (stock as unknown as StockData).code)}
+            pagination={true}
+            pageSize={10}
+            defaultPage={1}
+            onPageChange={(page) => console.log("Page changed to", page)}
           />
         )}
       </CardContent>

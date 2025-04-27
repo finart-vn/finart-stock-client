@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Work_Sans } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./providers";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/format-datetime";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/Header";
 import { Sidebar } from "@/components/sidebar";

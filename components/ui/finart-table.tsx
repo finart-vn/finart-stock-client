@@ -10,7 +10,8 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/format-datetime";
+import { Button } from "@/components/ui/button";
 
 // Define common types
 export type SortDirection = "asc" | "desc" | null;
@@ -37,6 +38,10 @@ export type FinartTableProps<T> = {
   compact?: boolean;
   striped?: boolean;
   highlightOnHover?: boolean;
+  pagination?: boolean;
+  pageSize?: number;
+  defaultPage?: number;
+  onPageChange?: (page: number) => void;
 };
 
 export function FinartTable<T extends Record<string, unknown>>({
@@ -51,11 +56,16 @@ export function FinartTable<T extends Record<string, unknown>>({
   compact = false,
   striped = false,
   highlightOnHover = true,
+  pagination = false,
+  pageSize = 10,
+  defaultPage = 1,
+  onPageChange,
 }: FinartTableProps<T>) {
   const [sortColumn, setSortColumn] = useState<string | null>(defaultSortColumn || null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(
     defaultSortColumn ? defaultSortDirection : null
   );
+  const [currentPage, setCurrentPage] = useState<number>(defaultPage);
 
   const handleSort = (columnId: string) => {
     if (!sortable) return;
@@ -116,6 +126,14 @@ export function FinartTable<T extends Record<string, unknown>>({
     return String(valueA).localeCompare(String(valueB)) * modifier;
   });
 
+  // Get paginated data
+  const paginatedData = pagination
+    ? sortedData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+    : sortedData;
+
+  // Calculate total pages
+  const totalPages = pagination ? Math.max(1, Math.ceil(sortedData.length / pageSize)) : 1;
+
   // Helper to get cell value
   const getCellValue = (column: ColumnDefinition<T>, row: T): React.ReactNode => {
     if (column.cell) {
@@ -139,6 +157,42 @@ export function FinartTable<T extends Record<string, unknown>>({
     ) : (
       <ChevronDownIcon className="ml-1 h-4 w-4" />
     );
+  };
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    onPageChange?.(page);
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const maxVisiblePages = 5;
+    const pages: (number | string)[] = [];
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if there are few
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+      
+      // Logic for showing pages around current page
+      if (currentPage <= 3) {
+        // Near the start
+        pages.push(2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        // Near the end
+        pages.push("...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        // In the middle
+        pages.push("...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -167,17 +221,17 @@ export function FinartTable<T extends Record<string, unknown>>({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortedData.length === 0 ? (
+          {paginatedData.length === 0 ? (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results found.
               </TableCell>
             </TableRow>
           ) : (
-            sortedData.map((row, rowIndex) => {
+            paginatedData.map((row, rowIndex) => {
               const rowClass = typeof rowClassName === "function" 
                 ? rowClassName(row, rowIndex) 
-                : rowClassName;
+                 : rowClassName;
               
               return (
                 <TableRow
@@ -212,6 +266,59 @@ export function FinartTable<T extends Record<string, unknown>>({
           )}
         </TableBody>
       </Table>
+      
+      {pagination && totalPages > 1 && (
+        <div className="flex items-center justify-center mt-4 space-x-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-8 h-8"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            aria-label="Previous page"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </Button>
+          
+          {getPageNumbers().map((page, index) => (
+            typeof page === "number" ? (
+              <Button
+                key={index}
+                variant={page === currentPage ? "default" : "ghost"}
+                size="icon"
+                className={cn(
+                  "w-8 h-8",
+                  page === currentPage ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                )}
+                onClick={() => handlePageChange(page)}
+                aria-label={`Page ${page}`}
+                aria-current={page === currentPage ? "page" : undefined}
+              >
+                {page}
+              </Button>
+            ) : (
+              <span key={index} className="text-muted-foreground px-2">
+                {page}
+              </span>
+            )
+          ))}
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-8 h-8"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            aria-label="Next page"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+            </svg>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

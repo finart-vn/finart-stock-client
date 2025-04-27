@@ -13,7 +13,7 @@ import "swiper/css/autoplay";
 // import required modules
 import { Autoplay } from "swiper/modules";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/format-datetime";
 
 // Sample news data structure (replace with actual data fetching later)
 const newsItems = [

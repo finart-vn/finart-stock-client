@@ -26,7 +26,7 @@ import TimeTabs from "@/components/ui/time-tabs";
 import { getMarketChart } from "@/lib/apis";
 import { MarketChartData } from "@/types/api/stock";
 import { parseISO } from "date-fns";
-import { getDateRange, parseUnixTimestamp } from "@/lib/utils";
+import { getDateRange, parseUnixTimestamp } from "@/lib/utils/format-datetime";
 ChartJS.register(
   CategoryScale,
   LinearScale,
