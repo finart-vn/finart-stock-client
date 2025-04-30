@@ -17,39 +17,6 @@ const handler = NextAuth({
         try {
           console.log("login credentials", credentials);
 
-          // const res: LoginResponse = await api.get(
-          //   `/login.json`,
-          //   {},
-          //   {
-          //     headers: {
-          //       Authorization: `Basic ${btoa(
-          //         `${credentials?.email}:${credentials?.password}`
-          //       )}`,
-          //     },
-          //   }
-          // );
-
-          // console.log("res", res);
-
-          // // Handle original response structure
-          // const userInfo = res.users[0];
-          // const section = res.userSessions[0];
-          // const emailInfo = res.emailAddresses[0];
-
-          // console.log({
-          //   id: userInfo.id,
-          //   name: userInfo.nickName,
-          //   email: emailInfo.address,
-          //   section,
-          // });
-
-          // return {
-          //   id: userInfo.id,
-          //   name: userInfo.nickName,
-          //   email: emailInfo.address,
-          //   section,
-          // };
-
           return {
             id: "1",
             name: "John Doe",
@@ -70,11 +37,20 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "select_account",
+          access_type: "offline",
+          response_type: "code",
+          scope: "openid email profile",
+        },
+      },
     }),
   ],
 
   pages: {
     signIn: "/login",
+    error: "/auth/error",
   },
 
   session: {
@@ -96,7 +72,6 @@ const handler = NextAuth({
 
       return token;
     },
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: any) {
       session.user.id = token.id;

@@ -1,4 +1,3 @@
-// components/auth/LoginModal.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -87,9 +86,7 @@ export const LoginModal = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && (
-            <div className="text-red-500 text-sm">{error}</div>
-          )}
+          {error && <div className="text-red-500 text-sm">{error}</div>}
           <Button
             className="w-full bg-blue-600 hover:bg-blue-700 text-white"
             onClick={handleLogin}
@@ -110,7 +107,11 @@ export const LoginModal = () => {
           </div>
 
           <div className="grid gap-2">
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+            >
               <Image
                 src="/google.svg"
                 alt="Google"
