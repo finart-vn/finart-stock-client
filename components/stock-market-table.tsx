@@ -93,7 +93,12 @@ export function StockMarketTable({
                 />
               </div>
             )}
-            <div className="font-medium">{stockRow.code}</div>
+            <a 
+              href={`/stock/${stockRow.code}`} 
+              className="font-medium text-primary hover:underline"
+            >
+              {stockRow.code}
+            </a>
           </div>
         );
       }
