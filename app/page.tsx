@@ -3,12 +3,10 @@
 import { MarketActivity } from "@/components/market-activity"; // Import the new component
 import { MarketChart } from "@/components/market-chart"; // Import the new chart component
 import { ProposeInvest } from "@/components/ProposeInvest"; // Import the ProposeInvest component
-import { SectorPerformance } from "@/components/sector-performance"; // Import the Sector Performance component
 import StockMarketTable from "@/components/stock-market-table"; // Import the Stock Market Table component
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -89,7 +87,7 @@ export default function HomePage() {
       </div> */}
 
       {/* Dashboard Overview Cards */}
-      <h1 className="text-lg font-semibold md:text-2xl">Dashboard Overview</h1>
+      {/* <h1 className="text-lg font-semibold md:text-2xl">Dashboard Overview</h1>
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <Card className="border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -137,7 +135,7 @@ export default function HomePage() {
             <p className="text-xs text-green-500">+1.8% all time</p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Market Activity Section */}
       <MarketActivity />
