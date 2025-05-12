@@ -1,28 +1,28 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Work_Sans } from "next/font/google";
-import "./globals.css";
-import ReduxProvider from "./providers";
-import { cn } from "@/lib/utils/format-datetime";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Header } from "@/components/layout/Header";
-import { Sidebar } from "@/components/sidebar";
-import { AuthProvider } from "./auth-provider";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono, Work_Sans } from 'next/font/google';
+import './globals.css';
+import ReduxProvider from './providers';
+import { cn } from '@/lib/utils/format-datetime';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Header } from '@/components/layout/Header';
+import { Sidebar } from '@/components/sidebar';
+import { AuthProvider } from './auth-provider';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
-const workSans = Work_Sans({ subsets: ["latin"] });
+const workSans = Work_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "FinArt Stock",
-  description: "Stock analysis platform",
+  title: 'FinArt Stock',
+  description: 'Stock analysis platform',
 };
 
 export default function RootLayout({
@@ -56,9 +56,9 @@ export default function RootLayout({
                 <Sidebar />
 
                 {/* Main content with margin to accommodate the sidebar */}
-                <div className="ml-16 flex-1 flex flex-col">
+                <Header />
+                <div className="container mx-auto flex flex-col">
                   {/* Header */}
-                  <Header />
                   {children}
                 </div>
               </div>
